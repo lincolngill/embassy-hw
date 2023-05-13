@@ -80,17 +80,17 @@ async fn encoder_task(mut encoder: Encoder<'static>) -> ! {
             Clockwise => {
                 debug!("Encoding clockwise");
                 //match led_state.ms.checked_add(LED_MS_ADJUST) {
-                match led_state.ms.checked_mul(2) {
-                    Some(v) => led_state.ms = if v == 0 {1} else {v},
-                    None => led_state.ms = u64::MAX,
+                led_state.ms = match led_state.ms.checked_mul(2) {
+                    Some(v) => if v == 0 {1} else {v},
+                    None => u64::MAX,
                 };
             }
             AntiClockwise => {
                 debug!("Encoding anti-clockwise");
                 //match led_state.ms.checked_sub(LED_MS_ADJUST) {
-                match led_state.ms.checked_div(2) {
-                    Some(v) => led_state.ms = v,
-                    None => led_state.ms = 0,
+                led_state.ms = match led_state.ms.checked_div(2) {
+                    Some(v) => v,
+                    None => 0,
                 };
             }
         };
