@@ -1,0 +1,56 @@
+// The format of this file is specified in https://probe.rs/docs/tools/vscode/#start-a-debug-session-with-minimum-configuration
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Builds all src/bin/*.rs and src/*.rs
+            "preLaunchTask": "rust: cargo build",
+            "type": "probe-rs-debug",
+            "request": "launch",
+            "name": "rp2040-project",
+            "cwd": "${workspaceFolder}",
+            "chip": "rp2040",
+            // RP2040 doesn't support connectUnderReset
+            "connectUnderReset": false,
+            "speed": 4000,
+            "runtimeExecutable": "probe-rs-debugger",
+            "runtimeArgs": [
+                "debug"
+            ],
+            "flashingConfig": {
+                "flashingEnabled": true,
+                "resetAfterFlashing": true,
+                "haltAfterReset": true,
+            },
+            "coreConfigs": [
+                {
+                    "coreIndex": 0,
+                    //"programBinary": "./target/thumbv6m-none-eabi/debug/${workspaceFolderBasename}",
+                    "programBinary": "./target/thumbv6m-none-eabi/debug/ws2812",
+                    "chip": "RP2040",
+                    "svdFile": "./.vscode/rp2040.svd",
+                    "rttEnabled": true,
+                    "rttChannelFormats": [
+                      {
+                        "channelNumber": 0,
+                        "dataFormat": "String", // Format RTT data as String data
+                        "showTimestamps": true, // Include host-side timestamps for every line of data transferred from the target RTT output
+                        "showLocation": true
+                      },
+                      {
+                        "channelNumber": 1,
+                        "dataFormat": "BinaryLE" // Treat data as raw binary data, and do not format in any way
+                      }
+                    ],
+                    "options": {
+                        "env": {
+                            "DEFMT_LOG": "debug"
+                        }
+                    },
+                }
+            ],
+            "consoleLogLevel": "Info", //Error, Warn, Info, Debug, Trace
+            "wireProtocol": "Swd"
+        }
+    ]
+}

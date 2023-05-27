@@ -4,3 +4,4 @@
 
 pub mod button;
 pub mod rotary_encoder;
+pub mod ws2812;

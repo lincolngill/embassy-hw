@@ -1,4 +1,5 @@
 use embassy_rp::gpio::{AnyPin, Input, Pull};
+use embassy_time::{Duration, Timer};
 //use defmt::*;
 
 pub struct Encoder<'a> {
@@ -20,6 +21,7 @@ impl<'a> Encoder<'a> {
 
     pub async fn rotation(&mut self) -> Direction {
         self.a_input.wait_for_any_edge().await;
+        Timer::after(Duration::from_millis(10)).await;
         let a: bool = self.a_input.get_level().into();
         let b: bool = self.b_input.get_level().into();
         //debug!("a={} b={}", a, b);
